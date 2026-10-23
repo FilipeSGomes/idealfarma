@@ -1,0 +1,1350 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#f4f7f2" />
+  <meta name="color-scheme" content="light" />
+  <title>Ideal Farma · Beauty Bar</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Nunito:wght@400;600;700&family=Oooh+Baby&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --ink: #1a2820;
+      --muted: #4d6458;
+      --cream: #f4f7f2;
+      --card: #ffffff;
+      --line: #d5e4da;
+      --blush: #e3f0e6;
+      --rose: #7dae90;
+      --hot: #1f7a4d;
+      --deep: #14352a;
+      --gold: #c6a36a;
+      --gold-deep: #6e5224;
+      --wine: #14352a;
+    }
+
+    * { box-sizing: border-box; }
+    html {
+      height: 100%;
+      -webkit-text-size-adjust: 100%;
+      text-size-adjust: 100%;
+    }
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: var(--cream);
+    }
+    body {
+      height: 100vh;
+      height: 100dvh;
+      overflow: hidden;
+      color: var(--ink);
+      font-family: "Nunito", "Trebuchet MS", sans-serif;
+      font-size: 16px;
+      overscroll-behavior: none;
+      -webkit-tap-highlight-color: transparent;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    button, input { font: inherit; color: inherit; }
+    button {
+      cursor: pointer;
+      touch-action: manipulation;
+      -webkit-tap-highlight-color: transparent;
+    }
+    button:focus-visible, input:focus-visible {
+      outline: 2px solid var(--hot);
+      outline-offset: 3px;
+    }
+    ::selection { background: #c9e4d2; color: var(--ink); }
+
+    .phone {
+      position: relative;
+      width: 100%;
+      height: 100vh;
+      height: 100dvh;
+      overflow: hidden;
+      background:
+        radial-gradient(120% 42% at 50% -8%, rgba(125, 174, 144, 0.38), transparent 58%),
+        var(--cream);
+    }
+
+    .atmosphere {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      overflow: hidden;
+      z-index: 0;
+    }
+    .atmosphere span {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(18px);
+      opacity: 0.55;
+    }
+    .atmosphere span:nth-child(1) {
+      width: 210px;
+      height: 210px;
+      background: #c5e0cf;
+      top: -70px;
+      right: -60px;
+      animation: drift 14s ease-in-out infinite;
+    }
+    .atmosphere span:nth-child(2) {
+      width: 160px;
+      height: 160px;
+      background: #f3e2c4;
+      bottom: 12%;
+      left: -50px;
+      animation: drift 16s ease-in-out infinite reverse;
+    }
+    .atmosphere span:nth-child(3) {
+      width: 120px;
+      height: 120px;
+      background: #d4eadc;
+      top: 42%;
+      right: -40px;
+      opacity: 0.4;
+      animation: drift 12s ease-in-out infinite 1s;
+    }
+    @keyframes drift {
+      0%, 100% { transform: translate3d(0, 0, 0); }
+      50% { transform: translate3d(-12px, 16px, 0); }
+    }
+
+    #app {
+      position: relative;
+      z-index: 1;
+      height: 100%;
+      min-height: 0;
+    }
+
+    .screen {
+      height: 100%;
+      min-height: 0;
+      overflow-x: hidden;
+      overflow-y: auto;
+      overscroll-behavior: contain;
+      -webkit-overflow-scrolling: touch;
+      padding:
+        calc(16px + env(safe-area-inset-top))
+        20px
+        calc(18px + env(safe-area-inset-bottom));
+    }
+    .screen::-webkit-scrollbar { width: 0; height: 0; }
+
+    .screen.from-forward { animation: enter-forward 0.46s cubic-bezier(.22, .8, .2, 1); }
+    .screen.from-back { animation: enter-back 0.46s cubic-bezier(.22, .8, .2, 1); }
+    .screen.from-none { animation: enter-fade 0.55s ease; }
+    @keyframes enter-forward {
+      from { opacity: 0; transform: translateX(42px); }
+      to { opacity: 1; transform: none; }
+    }
+    @keyframes enter-back {
+      from { opacity: 0; transform: translateX(-42px); }
+      to { opacity: 1; transform: none; }
+    }
+    @keyframes enter-fade {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    .screen.intro,
+    .screen.name,
+    .screen.brew,
+    .screen.result {
+      display: flex;
+      flex-direction: column;
+    }
+    .screen.intro .actions,
+    .screen.brew .actions { margin-top: auto; }
+
+    .kicker {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin: 0;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      font-size: 11px;
+      font-weight: 580;
+      color: var(--gold-deep);
+    }
+    .kicker.center { justify-content: center; }
+
+    .compact {
+      position: relative;
+      width: 230px;
+      height: 188px;
+      margin: 8px auto 4px;
+      pointer-events: none;
+    }
+    .petal {
+      position: absolute;
+      width: 16px;
+      height: 26px;
+      border-radius: 80% 80% 70% 12%;
+      background: linear-gradient(160deg, #e7f3ea, #7dae90 55%, #c6a36a);
+      opacity: 0.8;
+      animation: floaty 7s ease-in-out infinite;
+    }
+    .petal.a { top: 18px; left: 18px; transform: rotate(-28deg); }
+    .petal.b { top: 6px; right: 36px; width: 12px; height: 20px; animation-delay: -1.4s; }
+    .petal.c { bottom: 28px; left: 8px; transform: rotate(18deg); animation-delay: -2.2s; }
+    .petal.d { top: 46px; right: 8px; transform: rotate(32deg); animation-delay: -3s; }
+    .petal.e { bottom: 18px; right: 28px; width: 11px; height: 18px; animation-delay: -4s; }
+    @keyframes floaty {
+      0%, 100% { translate: 0 0; }
+      50% { translate: 0 -8px; }
+    }
+
+    .mirror {
+      position: absolute;
+      left: 50%;
+      top: 46%;
+      width: 142px;
+      height: 142px;
+      transform: translate(-50%, -50%);
+      animation: open-compact 0.9s cubic-bezier(.2, .8, .24, 1);
+    }
+    @keyframes open-compact {
+      from { opacity: 0; transform: translate(-50%, -46%) scale(0.72); }
+      to { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+    }
+    .mirror-ring {
+      position: absolute;
+      inset: -14px;
+      width: calc(100% + 28px);
+      height: calc(100% + 28px);
+    }
+    .mirror-ring circle {
+      fill: none;
+      stroke: #c6a36a;
+      stroke-width: 1.6;
+      stroke-linecap: round;
+      stroke-dasharray: 402;
+      stroke-dashoffset: 402;
+      animation: draw-ring 1.15s ease forwards 0.12s;
+    }
+    @keyframes draw-ring { to { stroke-dashoffset: 0; } }
+    .glass {
+      position: absolute;
+      inset: 0;
+      border-radius: 50%;
+      overflow: hidden;
+      display: grid;
+      place-items: center;
+      background:
+        radial-gradient(circle at 34% 30%, #fff 0%, #eef6f0 38%, #b7d4c4 72%, #e7c3a4 100%);
+      box-shadow:
+        inset 0 0 0 1px rgba(255, 255, 255, 0.85),
+        inset 0 -16px 24px rgba(31, 122, 77, 0.08),
+        0 0 0 7px rgba(198, 163, 106, 0.22),
+        0 0 0 9px #d7b98a,
+        0 16px 34px rgba(20, 53, 42, 0.16);
+    }
+    .glass strong {
+      position: relative;
+      z-index: 1;
+      font-family: "Cormorant Garamond", Palatino, serif;
+      font-weight: 600;
+      font-size: 46px;
+      letter-spacing: 0.04em;
+      color: var(--deep);
+    }
+    .shimmer {
+      position: absolute;
+      inset: -30%;
+      background: linear-gradient(115deg, transparent 36%, rgba(255, 255, 255, 0.82) 48%, transparent 60%);
+      transform: translateX(-70%) rotate(8deg);
+      animation: shimmer 3.4s ease-in-out infinite;
+    }
+    @keyframes shimmer {
+      0%, 58% { transform: translateX(-78%) rotate(8deg); }
+      82%, 100% { transform: translateX(78%) rotate(8deg); }
+    }
+
+    h1, h2, h3 {
+      font-family: "Cormorant Garamond", Palatino, serif;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      margin: 0;
+    }
+    h1 {
+      font-size: clamp(40px, 10vw, 50px);
+      line-height: 0.9;
+      text-align: center;
+    }
+    h1 em, h2 em {
+      font-family: "Oooh Baby", "Segoe Script", cursive;
+      font-style: normal;
+      font-weight: 400;
+      font-size: 1.22em;
+      letter-spacing: 0;
+      line-height: 1;
+      color: var(--hot);
+      display: inline-block;
+      padding: 0.08em 0.04em 0;
+    }
+    .lede {
+      text-align: center;
+      color: var(--muted);
+      line-height: 1.45;
+      margin: 12px auto 0;
+      max-width: 32ch;
+      font-size: 16.5px;
+    }
+    .deck {
+      margin: 6px 0 0;
+      color: var(--muted);
+      font-size: 16px;
+      line-height: 1.4;
+    }
+
+    .actions, .dock { display: grid; gap: 8px; }
+    .screen.intro .actions { padding-top: 16px; width: 100%; }
+
+    .btn {
+      border: 0;
+      border-radius: 999px;
+      min-height: 56px;
+      padding: 14px 18px;
+      background: linear-gradient(180deg, #2d6b4f 0%, #14352a 100%);
+      color: #f7faf6;
+      font-size: 16px;
+      font-weight: 580;
+      letter-spacing: 0.01em;
+      box-shadow: 0 10px 24px rgba(20, 53, 42, 0.22);
+    }
+    .btn:active { transform: scale(0.985); }
+    .btn.gold {
+      position: relative;
+      overflow: hidden;
+      background: linear-gradient(180deg, #f0ddb4 0%, #c6a36a 52%, #b08a49 100%);
+      color: #3a2410;
+      box-shadow: 0 10px 24px rgba(140, 106, 50, 0.28);
+    }
+    .btn.gold::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(110deg, transparent 30%, rgba(255, 255, 255, 0.48) 50%, transparent 68%);
+      transform: translateX(-130%);
+      animation: sheen 3.2s ease-in-out infinite;
+      pointer-events: none;
+    }
+    @keyframes sheen {
+      0%, 62% { transform: translateX(-130%); }
+      100% { transform: translateX(130%); }
+    }
+    .btn.ghost {
+      background: transparent;
+      color: var(--deep);
+      box-shadow: none;
+      border: 1px solid rgba(198, 163, 106, 0.85);
+    }
+
+    .fine, .legal {
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.45;
+      text-align: center;
+    }
+    .fine { margin: 0 0 10px; }
+    .legal { margin: 14px 0 4px; text-align: left; }
+
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      min-height: 52px;
+      gap: 12px;
+    }
+    .back {
+      border: 0;
+      background: transparent;
+      color: var(--deep);
+      min-height: 52px;
+      min-width: 52px;
+      padding: 0 10px 0 0;
+      display: inline-flex;
+      align-items: center;
+      gap: 2px;
+      font-size: 16px;
+      font-weight: 480;
+    }
+    .back svg { display: block; }
+
+    .compass {
+      width: 48px;
+      height: 48px;
+      position: relative;
+      flex: none;
+    }
+    .compass .well {
+      position: absolute;
+      inset: 6px;
+      border-radius: 50%;
+      overflow: hidden;
+      background: rgba(255, 255, 255, 0.82);
+    }
+    .compass .well i {
+      position: absolute;
+      left: -25%;
+      width: 150%;
+      bottom: 0;
+      height: calc(var(--p) * 100%);
+      background: linear-gradient(180deg, #d7eadc 0%, #7dae90 46%, #c6a36a 100%);
+      transition: height 0.55s cubic-bezier(.2, .8, .2, 1);
+    }
+    .compass .well i::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: -5px;
+      height: 10px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.55);
+    }
+    .compass svg {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      transform: rotate(-90deg);
+    }
+    .compass .track,
+    .compass .value {
+      fill: none;
+      stroke-width: 2.4;
+    }
+    .compass .track { stroke: rgba(198, 163, 106, 0.4); }
+    .compass .value {
+      stroke: #b8894a;
+      stroke-linecap: round;
+      stroke-dasharray: 97.39;
+      stroke-dashoffset: calc(97.39 * (1 - var(--p)));
+      transition: stroke-dashoffset 0.55s cubic-bezier(.2, .8, .2, 1);
+    }
+    .compass-num {
+      position: absolute;
+      inset: 0;
+      display: grid;
+      place-items: center;
+      font-size: 13px;
+      font-weight: 580;
+      color: var(--deep);
+      text-shadow: 0 1px 0 rgba(255, 255, 255, 0.65);
+    }
+
+    .meter {
+      height: 9px;
+      margin: 2px 0 0;
+      border-radius: 99px;
+      background: rgba(255, 255, 255, 0.72);
+      border: 1px solid rgba(198, 163, 106, 0.45);
+      overflow: hidden;
+    }
+    .meter span {
+      display: block;
+      height: 100%;
+      width: calc(var(--p) * 100%);
+      border-radius: inherit;
+      background: linear-gradient(90deg, #1f7a4d 0%, #7dae90 46%, #c6a36a 100%);
+      position: relative;
+      transition: width 0.55s cubic-bezier(.2, .8, .2, 1);
+    }
+    .meter span::after {
+      content: "";
+      position: absolute;
+      top: -3px;
+      right: -2px;
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 38% 35%, #fff, #c9e4d2 42%, #c6a36a);
+      box-shadow: 0 0 0 3px rgba(198, 163, 106, 0.22);
+    }
+
+    .question { margin: 18px 0 14px; }
+    .question p {
+      margin: 8px 0 0;
+      color: var(--muted);
+      line-height: 1.4;
+      font-size: 16px;
+    }
+    h2 { font-size: clamp(32px, 8vw, 38px); line-height: 1.02; }
+
+    .options { display: grid; gap: 10px; }
+    .opt {
+      text-align: left;
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      min-height: 68px;
+      padding: 12px 14px;
+      display: grid;
+      grid-template-columns: 44px 1fr;
+      gap: 12px;
+      align-items: center;
+      box-shadow: 0 8px 20px rgba(30, 70, 52, 0.04);
+      position: relative;
+      overflow: hidden;
+    }
+    .opt:active { transform: scale(0.985); }
+    .opt .copy strong {
+      display: block;
+      font-weight: 580;
+      font-size: 16.5px;
+      color: var(--ink);
+    }
+    .opt .copy small {
+      display: block;
+      color: var(--muted);
+      font-size: 13.5px;
+      margin-top: 2px;
+      line-height: 1.35;
+    }
+    .glyph {
+      width: 44px;
+      height: 44px;
+      border-radius: 14px;
+      display: grid;
+      place-items: center;
+      background: #f3f8f4;
+      color: var(--hot);
+    }
+    .options.is-frozen .opt:not(.picked) { opacity: 0.42; }
+    .opt.picked {
+      border-color: #c6a36a;
+      background: linear-gradient(105deg, #f8e7c8 0%, #dcecdf 58%, #f7faf4 100%);
+      box-shadow: 0 0 0 2px rgba(198, 163, 106, 0.6), 0 12px 28px rgba(31, 122, 77, 0.12);
+    }
+    .opt.picked::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background: radial-gradient(circle at 18% 50%, rgba(255, 244, 220, 0.95), rgba(183, 220, 198, 0.15) 46%, transparent 70%);
+      animation: wash 0.42s ease;
+    }
+    @keyframes wash {
+      from { opacity: 0; transform: scale(0.55); }
+      to { opacity: 1; transform: none; }
+    }
+
+    .name-wrap { margin-top: 8px; }
+    label {
+      display: block;
+      font-size: 14px;
+      color: var(--muted);
+      margin-bottom: 8px;
+    }
+    input[type="text"] {
+      width: 100%;
+      border: 1px solid var(--line);
+      background: white;
+      border-radius: 16px;
+      min-height: 58px;
+      padding: 0 16px;
+      font-size: 18px;
+    }
+    input[type="text"]::placeholder { color: #5d7366; }
+    .name .actions { margin-top: 18px; }
+
+    .screen.brew { cursor: pointer; text-align: center; }
+    .brew-mid { margin: auto 0; width: 100%; }
+    .vials {
+      display: flex;
+      justify-content: center;
+      gap: 22px;
+      margin: 0 0 22px;
+    }
+    .vial-col { display: flex; flex-direction: column; align-items: center; gap: 8px; }
+    .vial {
+      width: 54px;
+      height: 150px;
+      border-radius: 22px 22px 16px 16px;
+      border: 1.5px solid rgba(198, 163, 106, 0.9);
+      position: relative;
+      overflow: hidden;
+      background: linear-gradient(90deg, rgba(255, 255, 255, 0.72), rgba(255, 255, 255, 0.28) 38%, rgba(255, 255, 255, 0.5));
+      box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.65), 0 12px 24px rgba(30, 70, 52, 0.08);
+    }
+    .vial .cap {
+      position: absolute;
+      z-index: 2;
+      top: 7px;
+      left: 13px;
+      right: 13px;
+      height: 12px;
+      border-radius: 6px;
+      background: linear-gradient(#f6ead2, #c6a36a);
+    }
+    .vial i {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      height: 8%;
+      background: linear-gradient(180deg, #d4eadc 0%, #1f7a4d 42%, #c6a36a 100%);
+      animation: fill 1.5s cubic-bezier(.2, .75, .2, 1) forwards;
+    }
+    .vial i::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: -7px;
+      height: 14px;
+      border-radius: 50%;
+      background: rgba(247, 250, 246, 0.42);
+    }
+    .vial-col:nth-child(2) .vial i { animation-delay: 0.12s; }
+    .vial-col:nth-child(3) .vial i { animation-delay: 0.24s; }
+    @keyframes fill { to { height: 78%; } }
+    .vial-label {
+      font-size: 11px;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: var(--gold-deep);
+      font-weight: 700;
+      text-align: center;
+    }
+    .brew h2 { font-size: clamp(32px, 8vw, 40px); }
+    .hint-tap {
+      margin: 10px 0 0;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .screen.result {
+      overflow: hidden;
+      padding: 0;
+    }
+    .scroll {
+      flex: 1;
+      min-height: 0;
+      overflow: auto;
+      overscroll-behavior: contain;
+      -webkit-overflow-scrolling: touch;
+      padding: calc(16px + env(safe-area-inset-top)) 18px 8px;
+    }
+    .scroll::-webkit-scrollbar { width: 0; height: 0; }
+    .result-head { margin: 8px 0 0; }
+    .result-head h2 { font-size: clamp(30px, 8vw, 36px); }
+
+    .cards { display: grid; gap: 8px; margin-top: 10px; }
+    .card {
+      background:
+        linear-gradient(#fff, #fffdfb) padding-box,
+        linear-gradient(135deg, rgba(31, 122, 77, 0.42), rgba(198, 163, 106, 0.9)) border-box;
+      border: 1px solid transparent;
+      border-radius: 20px;
+      padding: 10px 12px 10px;
+      box-shadow: 0 10px 24px rgba(30, 70, 52, 0.05);
+      animation: card-in 0.5s cubic-bezier(.2, .7, .2, 1) both;
+    }
+    .card:nth-child(2) { animation-delay: 0.08s; }
+    .card:nth-child(3) { animation-delay: 0.16s; }
+    @keyframes card-in {
+      from { opacity: 0; transform: translateY(16px); }
+      to { opacity: 1; transform: none; }
+    }
+    .card-top {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+    }
+    .swatch {
+      width: 34px;
+      height: 46px;
+      border-radius: 12px 12px 10px 10px;
+      border: 1px solid rgba(198, 163, 106, 0.75);
+      position: relative;
+      overflow: hidden;
+      flex: none;
+      background: rgba(255, 255, 255, 0.7);
+    }
+    .swatch::before {
+      content: "";
+      position: absolute;
+      z-index: 1;
+      top: 5px;
+      left: 8px;
+      right: 8px;
+      height: 6px;
+      border-radius: 4px;
+      background: linear-gradient(#f6ead2, #c6a36a);
+    }
+    .swatch::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      height: 72%;
+      background: linear-gradient(#c9e4d2, #c6a36a);
+    }
+    .card.apoio .swatch::after {
+      height: 58%;
+      background: linear-gradient(#d7eadc, #7dae90);
+    }
+    .card.ritual .swatch::after {
+      height: 64%;
+      background: linear-gradient(#f3e6cf, #c6a36a);
+    }
+    .card.estrela .swatch::after {
+      height: 80%;
+      background: linear-gradient(#b7dcc6, #1f7a4d 68%, #c6a36a);
+    }
+    .role {
+      color: #1b6b45;
+      font-size: 12px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      font-weight: 580;
+      margin: 0;
+    }
+    .card h3 { font-size: 24px; line-height: 1.05; }
+    .meta {
+      display: flex;
+      gap: 8px;
+      margin: 8px 0;
+      flex-wrap: wrap;
+    }
+    .pill {
+      font-size: 12px;
+      border-radius: 999px;
+      padding: 4px 9px;
+      background: #f3f8f4;
+      color: var(--deep);
+    }
+    .pill.gold { background: #f8f1e4; color: var(--gold-deep); }
+    .because {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.3;
+      font-size: 14px;
+    }
+
+    .note {
+      margin-top: 12px;
+      background: #f3f6ee;
+      border-radius: 16px;
+      padding: 12px 14px;
+      color: #6b4524;
+      font-size: 14px;
+      line-height: 1.45;
+    }
+
+    .dock {
+      flex-shrink: 0;
+      padding: 8px 16px calc(8px + env(safe-area-inset-bottom));
+      background: rgba(244, 247, 242, 0.94);
+      border-top: 1px solid rgba(198, 163, 106, 0.4);
+      backdrop-filter: blur(12px);
+    }
+    .dock .btn { min-height: 52px; }
+
+    .toast {
+      position: absolute;
+      left: 16px;
+      right: 16px;
+      bottom: calc(20px + env(safe-area-inset-bottom));
+      background: var(--deep);
+      color: white;
+      border-radius: 16px;
+      padding: 12px 14px;
+      font-size: 14px;
+      line-height: 1.35;
+      z-index: 5;
+      text-align: center;
+      box-shadow: 0 12px 30px rgba(20, 53, 42, 0.24);
+    }
+    .phone.is-result .toast {
+      bottom: calc(96px + env(safe-area-inset-bottom));
+    }
+
+    @media (min-width: 760px) {
+      html, body {
+        background:
+          radial-gradient(900px 480px at -10% -10%, #cfe6d6 0%, transparent 55%),
+          radial-gradient(700px 420px at 110% 0%, #f0d7b4 0%, transparent 50%),
+          radial-gradient(800px 500px at 50% 120%, #7dae90 0%, transparent 46%),
+          #b7d4c4;
+      }
+      body {
+        display: grid;
+        place-items: center;
+      }
+      .phone {
+        width: 390px;
+        height: min(844px, calc(100dvh - 48px));
+        border-radius: 44px;
+        box-shadow:
+          0 0 0 10px rgba(247, 250, 246, 0.42),
+          0 0 0 12px rgba(198, 163, 106, 0.55),
+          0 40px 80px rgba(20, 53, 42, 0.28);
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+      .vial i { height: 78% !important; }
+      .petal { animation: none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="phone">
+    <div class="atmosphere" aria-hidden="true"><span></span><span></span><span></span></div>
+    <main id="app" aria-live="polite"></main>
+  </div>
+  <script>
+    /*
+      Ideal Farma · Beauty Bar
+      Troque o número abaixo pelo WhatsApp da farmácia.
+      Formato: DDI + DDD + número, só dígitos. Ex.: 5511988887777
+    */
+    const WHATSAPP = "5511971539376";
+
+    const GOALS = [
+      { id: "glow", title: "Minha pele", text: "Manchas, brilho, linhas ou espinhas.", icon: "spark" },
+      { id: "hair", title: "Meu cabelo e unhas", text: "Queda, crescimento, unha fraca ou sem brilho.", icon: "hair" },
+      { id: "light", title: "Meu corpo", text: "Inchaço, vontade de doce, roupa ou cansaço.", icon: "drop" },
+      { id: "energy", title: "Meu dia a dia", text: "Sono, TPM, estresse ou cansaço da tarde.", icon: "sun" },
+      { id: "after", title: "Depois de emagrecer", text: "Cabelo, rosto, força, estômago ou fome.", icon: "heart" }
+    ];
+
+    const CONCERNS = {
+      glow: {
+        ask: "O que mais te incomoda na pele?",
+        hint: "Escolhe o que você vê primeiro no espelho.",
+        items: [
+          { id: "tom", title: "Manchas", text: "Quero a pele mais igual." },
+          { id: "vico", title: "Sem brilho", text: "A pele está apagada." },
+          { id: "firme", title: "Linhas e flacidez", text: "A pele está cansada." },
+          { id: "acne", title: "Espinhas", text: "Quero a pele mais lisa." }
+        ]
+      },
+      hair: {
+        ask: "O que mais te incomoda no cabelo?",
+        hint: "Unha entra junto.",
+        items: [
+          { id: "queda", title: "Está caindo", text: "Cai no banho e no travesseiro." },
+          { id: "crescimento", title: "Não cresce", text: "Quero o cabelo mais comprido." },
+          { id: "unhas", title: "Unha fraca", text: "Quebra antes de crescer." },
+          { id: "brilho", title: "Sem brilho", text: "O cabelo está opaco." }
+        ]
+      },
+      light: {
+        ask: "O que você quer sentir no corpo?",
+        hint: "Fórmula para acelerar o metabolismo a farmacêutica vê com você.",
+        items: [
+          { id: "inchaco", title: "Inchaço", text: "Acordo me sentindo inchada." },
+          { id: "doce", title: "Vontade de doce", text: "O doce manda em mim." },
+          { id: "contorno", title: "A roupa", text: "Quero a roupa caindo melhor." },
+          { id: "cansaco", title: "Cansaço", text: "O corpo está lento." }
+        ]
+      },
+      energy: {
+        ask: "O que está pesando no seu dia?",
+        hint: "Sono, humor e energia andam juntos.",
+        items: [
+          { id: "sono", title: "Durmo mal", text: "Acordo cansada." },
+          { id: "tpm", title: "TPM", text: "Nesses dias eu mudo." },
+          { id: "estresse", title: "Estresse", text: "A cabeça não desliga." },
+          { id: "tarde", title: "Cansaço da tarde", text: "Depois do almoço eu apago." }
+        ]
+      },
+      after: {
+        ask: "O que ficou depois de emagrecer?",
+        hint: "Escolhe o que mais te incomoda agora.",
+        items: [
+          { id: "cabelo", title: "Meu cabelo caiu", text: "Emagreci e o cabelo foi junto." },
+          { id: "pele", title: "Meu rosto mudou", text: "Ficou mais fino e cansado." },
+          { id: "forca", title: "Perdi força", text: "O corpo ficou mais fraco." },
+          { id: "estomago", title: "Meu estômago", text: "Enjoo, intestino, comida difícil." },
+          { id: "fome", title: "A fome voltou", text: "Parei e a vontade voltou." }
+        ]
+      }
+    };
+
+    const RHYTHMS = [
+      { id: "pratica", title: "Cápsula, bem fácil", text: "Quero tomar e seguir o dia." },
+      { id: "treino", title: "Eu treino", text: "Quero cuidar do corpo junto." },
+      { id: "sono", title: "Meu sono é curto", text: "A noite precisa de ajuda." },
+      { id: "creme", title: "Quero passar na pele", text: "Gosto de creme." },
+      { id: "evento", title: "Tenho um compromisso", text: "Quero a pele bonita para sair." }
+    ];
+
+    const FORMULAS = {
+      luminis: { name: "Luminis", form: "Cápsulas", line: "Pele", promise: "Para a pele apagada e cansada. O brilho começa de dentro." },
+      serum: { name: "Sérum Rosa Gold", form: "Sérum", line: "Pele", promise: "Para manchas e para a pele na hora de sair." },
+      noite: { name: "Noite de Seda", form: "Creme", line: "Pele", promise: "Creme da noite para linhas e pele cansada." },
+      fio: { name: "Fio Forte", form: "Cápsulas", line: "Cabelo", promise: "Para queda, quebra e unha fraca. Todo dia." },
+      raiz: { name: "Raiz Viva", form: "Tônico", line: "Cabelo", promise: "Para passar no couro cabeludo e ajudar o cabelo a crescer." },
+      leveza: { name: "Leveza", form: "Cápsulas", line: "Corpo", promise: "Para quem acorda inchada e quer se sentir mais leve." },
+      doce: { name: "Doce Calmo", form: "Cápsulas", line: "Corpo", promise: "Para a vontade de doce ao longo do dia." },
+      clareza: { name: "Clareza", form: "Cápsulas", line: "Energia", promise: "Para ter energia no dia, sem aquele pico e a queda depois." },
+      sono: { name: "Sono Rosa", form: "Cápsulas", line: "Noite", promise: "Para dormir melhor. Pele, humor e cabelo sentem." },
+      aurora: { name: "Aurora", form: "Cápsulas", line: "Humor", promise: "Para TPM, dias tristes e cabeça cheia." },
+      ancora: { name: "Âncora", form: "Cápsulas", line: "Depois", promise: "Para o cabelo que caiu depois de emagrecer." },
+      contorno: { name: "Contorno", form: "Creme", line: "Pele", promise: "Creme para o rosto e o corpo que ficaram mais finos." },
+      recompoe: { name: "Recompõe", form: "Cápsulas", line: "Força", promise: "Para quem perdeu força depois de emagrecer." },
+      equilibrio: { name: "Equilíbrio", form: "Cápsulas", line: "Conforto", promise: "Para estômago sensível e intestino desregulado." }
+    };
+
+    const HERO = {
+      glow: { tom: "serum", vico: "luminis", firme: "noite", acne: "serum" },
+      hair: { queda: "fio", crescimento: "raiz", unhas: "fio", brilho: "fio" },
+      light: { inchaco: "leveza", doce: "doce", contorno: "leveza", cansaco: "clareza" },
+      energy: { sono: "sono", tpm: "aurora", estresse: "aurora", tarde: "clareza" },
+      after: { cabelo: "ancora", pele: "contorno", forca: "recompoe", estomago: "equilibrio", fome: "doce" }
+    };
+
+    const SUPPORT = {
+      glow: { tom: "luminis", vico: "serum", firme: "luminis", acne: "luminis" },
+      hair: { queda: "raiz", crescimento: "fio", unhas: "raiz", brilho: "raiz" },
+      light: { inchaco: "doce", doce: "leveza", contorno: "contorno", cansaco: "leveza" },
+      energy: { sono: "clareza", tpm: "sono", estresse: "sono", tarde: "sono" },
+      after: { cabelo: "contorno", pele: "ancora", forca: "ancora", estomago: "ancora", fome: "leveza" }
+    };
+
+    const RITUAL = { pratica: "clareza", treino: "recompoe", sono: "sono", creme: "noite", evento: "serum" };
+    const FALLBACK = ["serum", "luminis", "sono", "noite", "fio", "leveza", "ancora", "clareza", "aurora"];
+
+    const BECAUSE = {
+      "glow|tom": ["Para as manchas, com calma.", "As cápsulas ajudam o que o sérum faz na pele."],
+      "glow|vico": ["Para a pele apagada, o cuidado também é por dentro.", "O sérum entra na hora de se arrumar."],
+      "glow|firme": ["Linhas e flacidez gostam do creme à noite.", "De dia, as cápsulas seguem com a pele."],
+      "glow|acne": ["Para espinhas, um sérum leve.", "As cápsulas ajudam a pele a acalmar."],
+      "hair|queda": ["Queda pede cápsula todo dia.", "O tônico entra no banho, na raiz."],
+      "hair|crescimento": ["O tônico ajuda o cabelo a crescer.", "A cápsula cuida do fio e da unha juntos."],
+      "hair|unhas": ["Unha fraca e cabelo fraco pedem o mesmo cuidado.", "O tônico completa, na raiz."],
+      "hair|brilho": ["Brilho também se constrói de dentro.", "O tônico evita que o cuidado fique só na máscara."],
+      "light|inchaco": ["Começa pelo inchaço.", "A vontade de doce costuma vir junto."],
+      "light|doce": ["Para a vontade de doce que atravessa o dia.", "A outra fórmula ajuda você a se sentir mais leve."],
+      "light|contorno": ["Para a roupa cair melhor.", "O creme cuida da pele por fora."],
+      "light|cansaco": ["Corpo lento precisa de energia primeiro.", "A outra fórmula olha para o inchaço do dia."],
+      "energy|sono": ["Dormir mal pesa no humor e na pele.", "A energia do dia fica mais fácil com a noite em ordem."],
+      "energy|tpm": ["A TPM pede cuidado com o humor.", "Dormir melhor deixa esses dias mais leves."],
+      "energy|estresse": ["Quando a cabeça não desliga, a pele aparece.", "A noite ajuda o corpo a soltar o dia."],
+      "energy|tarde": ["Para o cansaço depois do almoço.", "Se a noite melhora, a tarde seguinte também."],
+      "after|cabelo": ["É comum o cabelo cair depois de emagrecer.", "O rosto também muda. O creme cuida dessa parte."],
+      "after|pele": ["Rosto mais fino pede creme, com calma.", "O cabelo quase sempre precisa de cuidado junto."],
+      "after|forca": ["Emagrecer e perder força podem ser cuidados diferentes.", "O cabelo entra porque ele costuma avisar primeiro."],
+      "after|estomago": ["Estômago sensível pede conforto primeiro.", "Enquanto a comida volta, o cabelo não fica de lado."],
+      "after|fome": ["Quando a fome volta, o cuidado é com a vontade.", "A outra fórmula ajuda o corpo a se sentir mais leve."]
+    };
+
+    const state = { step: "intro", name: "", goal: "", concern: "", rhythm: "" };
+    let brewToken = 0;
+    let toastTimer = 0;
+    let pickTimer = 0;
+    let brewTimer = 0;
+    let advancing = false;
+    let navDir = 0;
+    const motionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
+
+    const ICONS = {
+      spark: '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 2.5l1.4 6.1L19.5 10 13.4 11.4 12 17.5 10.6 11.4 4.5 10l6.1-1.4L12 2.5z"/><path d="M18 15l.6 2.4L21 18l-2.4.6L18 21l-.6-2.4L15 18l2.4-.6L18 15z"/></svg>',
+      hair: '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M8 4c0 6 1 8 1 12"/><path d="M12 3c0 7 1 9 1 14"/><path d="M16 4c0 6-1 8-1 12"/></svg>',
+      drop: '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 3s6 6.2 6 10.2A6 6 0 1 1 6 13.2C6 9.2 12 3 12 3z"/></svg>',
+      sun: '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="3.2"/><path d="M12 3.5v2.2M12 18.3v2.2M3.5 12h2.2M18.3 12h2.2M6 6l1.6 1.6M16.4 16.4L18 18M18 6l-1.6 1.6M7.6 16.4L6 18"/></svg>',
+      heart: '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 19s-7-4.2-7-9a4 4 0 0 1 7-2 4 4 0 0 1 7 2c0 4.8-7 9-7 9z"/></svg>'
+    };
+    const ICON_LIST = ["spark", "hair", "drop", "sun", "heart"];
+
+    function motionOn() { return !motionQuery.matches; }
+
+    function esc(value) {
+      return String(value).replace(/[&<>"']/g, (char) => ({
+        "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"
+      }[char]));
+    }
+
+    function goalById(id) { return GOALS.find((item) => item.id === id); }
+    function concernById(id) { return CONCERNS[state.goal].items.find((item) => item.id === id); }
+    function rhythmById(id) { return RHYTHMS.find((item) => item.id === id); }
+
+    function firstName() {
+      const clean = state.name.trim().replace(/\s+/g, " ");
+      return clean ? clean.split(" ")[0] : "";
+    }
+
+    function buildTrio() {
+      const heroId = HERO[state.goal][state.concern];
+      const supportId = SUPPORT[state.goal][state.concern];
+      let ritualId = RITUAL[state.rhythm];
+      const used = new Set([heroId, supportId]);
+      if (used.has(ritualId)) ritualId = FALLBACK.find((id) => !used.has(id));
+      const reasons = BECAUSE[state.goal + "|" + state.concern];
+      const roles = [
+        { role: "A principal", id: heroId, because: reasons[0] },
+        { role: "A que completa", id: supportId, because: reasons[1] },
+        { role: "A de todo dia", id: ritualId, because: FORMULAS[ritualId].promise }
+      ];
+      return roles.map((item) => ({ ...item, ...FORMULAS[item.id] }));
+    }
+
+    function noteFor() {
+      if (state.goal === "light") {
+        return "Quer uma fórmula para acelerar o metabolismo, como laranja-amarga? A farmacêutica vê isso com você. Ela olha pressão, coração, ansiedade, gravidez e o que você já toma.";
+      }
+      if (state.goal === "after") {
+        return "Cabelo caindo, rosto mais fino, menos força e estômago sensível são comuns depois de emagrecer com medicação. Estas fórmulas cuidam disso. Remédio e receita ficam com a farmacêutica.";
+      }
+      return "";
+    }
+
+    function whatsText(trio) {
+        const nome = firstName() || "cliente do Beauty Bar";
+      const lines = [
+        "Oi, Ideal Farma! Fiz o Beauty Bar.",
+        "",
+        "Me chamo " + nome + ".",
+        "Quero cuidar de: " + goalById(state.goal).title,
+        "O que me incomoda: " + concernById(state.concern).title,
+        "Como quero usar: " + rhythmById(state.rhythm).title,
+        "",
+        "Meu trio:",
+        ...trio.map((item, index) => (index + 1) + ". " + item.name + " (" + item.form + ") — " + item.role.toLowerCase()),
+        "",
+        "Quero mandar produzir. Qual é o valor?"
+      ];
+      return lines.join("\n");
+    }
+
+    function showToast(message) {
+      const old = document.querySelector(".toast");
+      if (old) old.remove();
+      const toast = document.createElement("div");
+      toast.className = "toast";
+      toast.textContent = message;
+      document.querySelector(".phone").appendChild(toast);
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => toast.remove(), 3400);
+    }
+
+    async function sendWhatsapp(trio) {
+      const text = whatsText(trio);
+      const digits = String(WHATSAPP).replace(/\D/g, "");
+      if (digits.length >= 12) {
+        window.open("https://wa.me/" + digits + "?text=" + encodeURIComponent(text), "_blank", "noopener");
+        return;
+      }
+      try {
+        await navigator.clipboard.writeText(text);
+        showToast("Mensagem copiada. Falta colocar o WhatsApp da farmácia no protótipo.");
+      } catch (error) {
+        showToast("Coloque o número do WhatsApp no início do arquivo para este botão abrir a conversa.");
+      }
+    }
+
+    function cancelPending() {
+      clearTimeout(pickTimer);
+      clearTimeout(brewTimer);
+      advancing = false;
+      brewToken += 1;
+    }
+
+    function render() {
+      const app = document.getElementById("app");
+      document.querySelector(".phone").classList.toggle("is-result", state.step === "result");
+      app.innerHTML = screens[state.step]();
+      const screen = app.querySelector(".screen");
+      if (screen) {
+        const dir = navDir < 0 ? "from-back" : navDir > 0 ? "from-forward" : "from-none";
+        screen.classList.add(dir);
+      }
+      bind();
+    }
+
+    const screens = {
+      intro() {
+        return `
+          <section class="screen intro">
+            <p class="kicker"><span>Ideal Farma</span><span>Beauty Bar</span></p>
+            <div class="compact" aria-hidden="true">
+              <i class="petal a"></i>
+              <i class="petal b"></i>
+              <i class="petal c"></i>
+              <i class="petal d"></i>
+              <i class="petal e"></i>
+              <div class="mirror">
+                <svg class="mirror-ring" viewBox="0 0 160 160">
+                  <circle cx="80" cy="80" r="64"></circle>
+                </svg>
+                <div class="glass">
+                  <strong>IF</strong>
+                  <span class="shimmer"></span>
+                </div>
+              </div>
+            </div>
+            <div class="hero-copy">
+              <h1>Três fórmulas.<br><em>Feitas para você.</em></h1>
+              <p class="lede">Responde em um minuto. No final, três fórmulas para você mandar produzir.</p>
+            </div>
+            <div class="actions">
+              <p class="fine">Para você. Nada fica salvo neste celular. A farmacêutica confirma a fórmula.</p>
+              <button class="btn" type="button" data-go="name">Começar meu trio</button>
+            </div>
+          </section>`;
+      },
+      name() {
+        return `
+          <section class="screen name">
+            ${stepHead(0)}
+            <div class="question">
+              <h2>Como você se chama?</h2>
+              <p>Só o primeiro nome. Ele vai na mensagem do WhatsApp.</p>
+            </div>
+            <div class="name-wrap">
+              <label for="nome">Seu nome</label>
+              <input id="nome" type="text" maxlength="24" autocomplete="off" autocorrect="off" autocapitalize="words" enterkeyhint="next" placeholder="Ex.: Marina" value="${esc(state.name)}" />
+            </div>
+            <div class="actions">
+              <button class="btn" type="button" id="name-next">Continuar</button>
+              <button class="btn ghost" type="button" id="name-skip">Seguir sem nome</button>
+            </div>
+          </section>`;
+      },
+      goal() {
+        return `
+          <section class="screen">
+            ${stepHead(1)}
+            <div class="question">
+              <h2>${firstName() ? esc(firstName()) + ", o que você quer cuidar?" : "O que você quer cuidar?"}</h2>
+              <p>Escolhe uma. As três fórmulas saem daqui.</p>
+            </div>
+            <div class="options">
+              ${GOALS.map((item, index) => option(item, "goal", index)).join("")}
+            </div>
+          </section>`;
+      },
+      concern() {
+        const block = CONCERNS[state.goal];
+        return `
+          <section class="screen">
+            ${stepHead(2)}
+            <div class="question">
+              <h2>${esc(block.ask)}</h2>
+              <p>${esc(block.hint)}</p>
+            </div>
+            <div class="options">
+              ${block.items.map((item, index) => option(item, "concern", index)).join("")}
+            </div>
+          </section>`;
+      },
+      rhythm() {
+        return `
+          <section class="screen">
+            ${stepHead(3)}
+            <div class="question">
+              <h2>Como você quer cuidar?</h2>
+              <p>Isso escolhe a terceira fórmula, a do dia a dia.</p>
+            </div>
+            <div class="options">
+              ${RHYTHMS.map((item, index) => option(item, "rhythm", index)).join("")}
+            </div>
+          </section>`;
+      },
+      brew() {
+        const nome = firstName();
+        return `
+          <section class="screen brew">
+            <p class="kicker center">Ideal Farma</p>
+            <div class="brew-mid">
+              <div class="vials" aria-hidden="true">
+                <div class="vial-col"><div class="vial"><span class="cap"></span><i></i></div><span class="vial-label">Principal</span></div>
+                <div class="vial-col"><div class="vial"><span class="cap"></span><i></i></div><span class="vial-label">Completa</span></div>
+                <div class="vial-col"><div class="vial"><span class="cap"></span><i></i></div><span class="vial-label">Todo dia</span></div>
+              </div>
+              <h2>${nome ? esc(nome) + ", " : ""}suas fórmulas<br><em>estão prontas.</em></h2>
+              <p class="lede">Separando a principal, a que completa e a de todo dia.</p>
+            </div>
+            <div class="actions">
+              <p class="hint-tap">Toque para abrir</p>
+              <button class="btn ghost" type="button" id="skip-brew">Ver meu trio</button>
+            </div>
+          </section>`;
+      },
+      result() {
+        const trio = buildTrio();
+        const nome = firstName();
+        const note = noteFor();
+        const title = nome
+          ? esc(nome) + ",<br><em>este é o seu trio.</em>"
+          : "Seu trio<br><em>está pronto.</em>";
+        return `
+          <section class="screen result">
+            <div class="scroll">
+              <p class="kicker"><span>Ideal Farma</span><span>Seu trio</span></p>
+              <div class="result-head">
+                <h2>${title}</h2>
+              </div>
+              <div class="cards">
+                ${trio.map(card).join("")}
+              </div>
+              ${note ? `<div class="note">${esc(note)}</div>` : ""}
+              <p class="legal">Conversa com a farmacêutica da Ideal Farma. Não é diagnóstico nem receita. Se você está grávida, amamentando ou toma remédio todo dia, avisa no balcão. O preço sai nessa conversa.</p>
+            </div>
+            <div class="dock">
+              <button class="btn gold" type="button" id="whats">Mandar produzir no WhatsApp</button>
+            </div>
+          </section>`;
+      }
+    };
+
+    function stepHead(step) {
+      const p = ((step + 1) / 4).toFixed(4);
+      const n = step + 1;
+      return `
+        <div class="topbar">
+          <button class="back" type="button" data-back>
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>
+            Voltar
+          </button>
+          <div class="compass" style="--p:${p}" role="progressbar" aria-valuemin="1" aria-valuemax="4" aria-valuenow="${n}" aria-label="Passo ${n} de 4">
+            <span class="well"><i></i></span>
+            <svg viewBox="0 0 36 36" aria-hidden="true">
+              <circle class="track" cx="18" cy="18" r="15.5"></circle>
+              <circle class="value" cx="18" cy="18" r="15.5"></circle>
+            </svg>
+            <span class="compass-num">${n}</span>
+          </div>
+        </div>
+        <div class="meter" style="--p:${p}" aria-hidden="true"><span></span></div>`;
+    }
+
+    function option(item, key, index) {
+      const iconName = item.icon || ICON_LIST[index % ICON_LIST.length];
+      const icon = ICONS[iconName] || ICONS.spark;
+      return `
+        <button class="opt" type="button" data-pick="${esc(key)}" data-id="${esc(item.id)}">
+          <span class="glyph">${icon}</span>
+          <span class="copy"><strong>${esc(item.title)}</strong><small>${esc(item.text)}</small></span>
+        </button>`;
+    }
+
+    function card(item, index) {
+      const tones = ["estrela", "apoio", "ritual"];
+      const num = String(index + 1).padStart(2, "0");
+      return `
+        <article class="card ${tones[index] || "ritual"}">
+          <div class="card-top">
+            <span class="swatch" aria-hidden="true"></span>
+            <div>
+              <p class="role">${num} · ${esc(item.role)}</p>
+              <h3>${esc(item.name)}</h3>
+            </div>
+          </div>
+          <div class="meta">
+            <span class="pill">${esc(item.form)}</span>
+            <span class="pill gold">${esc(item.line)}</span>
+          </div>
+          <p class="because">${esc(item.because)}</p>
+        </article>`;
+    }
+
+    function go(step, dir) {
+      navDir = dir;
+      state.step = step;
+      render();
+    }
+
+    function startBrew() {
+      state.step = "brew";
+      const token = ++brewToken;
+      navDir = 1;
+      render();
+      const wait = motionOn() ? 1880 : 420;
+      brewTimer = setTimeout(() => finishBrew(token), wait);
+      const screen = document.querySelector(".screen.brew");
+      if (screen) screen.addEventListener("click", () => finishBrew(token));
+    }
+
+    function finishBrew(token) {
+      if (token !== brewToken) return;
+      clearTimeout(brewTimer);
+      brewToken += 1;
+      navDir = 1;
+      state.step = "result";
+      render();
+    }
+
+    function bind() {
+      document.querySelectorAll("[data-go]").forEach((button) => {
+        button.addEventListener("click", () => go(button.dataset.go, 1));
+      });
+
+      const back = document.querySelector("[data-back]");
+      if (back) {
+        back.addEventListener("click", () => {
+          cancelPending();
+          const order = ["name", "goal", "concern", "rhythm"];
+          const index = order.indexOf(state.step);
+          go(index > 0 ? order[index - 1] : "intro", index > 0 ? -1 : 0);
+        });
+      }
+
+      const nameNext = document.getElementById("name-next");
+      const nameInput = document.getElementById("nome");
+      if (nameNext && nameInput) {
+        const submit = (skip) => {
+          state.name = skip ? "" : nameInput.value.trim();
+          nameInput.blur();
+          go("goal", 1);
+        };
+        nameNext.addEventListener("click", () => submit(false));
+        document.getElementById("name-skip").addEventListener("click", () => submit(true));
+        nameInput.addEventListener("keydown", (event) => {
+          if (event.key === "Enter") submit(false);
+        });
+        nameInput.focus({ preventScroll: true });
+      }
+
+      document.querySelectorAll("[data-pick]").forEach((button) => {
+        button.addEventListener("click", () => {
+          if (advancing) return;
+          advancing = true;
+          const key = button.dataset.pick;
+          const id = button.dataset.id;
+          if (key === "goal" && state.goal !== id) state.concern = "";
+          state[key] = id;
+          button.classList.add("picked");
+          const group = button.closest(".options");
+          if (group) group.classList.add("is-frozen");
+          const wait = motionOn() ? 420 : 90;
+          pickTimer = setTimeout(() => {
+            advancing = false;
+            if (key === "rhythm") {
+              startBrew();
+              return;
+            }
+            navDir = 1;
+            if (key === "goal") state.step = "concern";
+            if (key === "concern") state.step = "rhythm";
+            render();
+          }, wait);
+        });
+      });
+
+      const whats = document.getElementById("whats");
+      if (whats) whats.addEventListener("click", () => sendWhatsapp(buildTrio()));
+    }
+
+    render();
+  </script>
+</body>
+</html>
